@@ -44,10 +44,6 @@ int main(void) {
 	char volverAtras;
 
 	flagMenu = 0;
-	flagPrecioDeVuelos = 0;
-	flagCalculosPrecios = 0;
-	flagPrecioAerolineas = 0;
-	flagPrecioLatam = 0;
 
 	do
 	{
