@@ -80,63 +80,63 @@ int main(void) {
 				switch(opcionesDelMenu)
 				{
 					case 1:
-							verificacionRetorno = getFloat(&kilometros ,"Ingresar Kilometros: ", "La km no son validos \n\n", 30000, 1, 3);
-							if(verificacionRetorno == 0)
-							{
-								flagMenu = 1;
-								flagCalculosPrecios = 0;
-							}
+						verificacionRetorno = getFloat(&kilometros ,"Ingresar Kilometros: ", "La km no son validos \n\n", 30000, 1, 3);
+						if(verificacionRetorno == 0)
+						{
+							flagMenu = 1;
+							flagCalculosPrecios = 0;
+						}
 						break;
 					case 2:
-							do
+						do
+						{
+							volverAtras = 'n';
+							system("cls");
+							printf("\nIngresar Precios de Vuelos \n\n");
+							printf("1) Ingresar Precio Aerolineas (Aerolineas = $%.2f)\n", precioAerolineas);
+							printf("2) Ingresar Precio Latam (Latam = $%.2f)\n", precioLatam);
+							printf("3) Volver atras\n");
+
+							verificacionRetorno = getInt(&opcionMenuPrecios ,"Ingrese una opcion: ", "La opcion no es valida \n\n", 3, 1, 3);
+
+							if(verificacionRetorno == 0)
 							{
-								volverAtras = 'n';
-								system("cls");
-								printf("\nIngresar Precios de Vuelos \n\n");
-								printf("1) Ingresar Precio Aerolineas (Aerolineas = $%.2f)\n", precioAerolineas);
-								printf("2) Ingresar Precio Latam (Latam = $%.2f)\n", precioLatam);
-								printf("3) Volver atras\n");
-
-								verificacionRetorno = getInt(&opcionMenuPrecios ,"Ingrese una opcion: ", "La opcion no es valida \n\n", 3, 1, 3);
-
-								if(verificacionRetorno == 0)
+								switch(opcionMenuPrecios)
 								{
-									switch(opcionMenuPrecios)
-									{
-										case 1:
-											verificacionRetorno = getFloat(&precioAerolineas ,"Precio vuelo Aerolineas: $", "El precio no es valido \n\n", 1500000, 1, 3);
-											if(verificacionRetorno == 0)
-											{
-												flagPrecioAerolineas = 1;
-												flagCalculosPrecios = 0;
-											}
-											break;
-										case 2:
-											verificacionRetorno = getFloat(&precioLatam ,"Precio vuelo LATAM: $", "El precio no es valido \n\n", 1500000, 1, 3);
-											if(verificacionRetorno == 0)
-											{
-												flagPrecioLatam = 1;
-												flagCalculosPrecios = 0;
-											}
-											break;
-										case 3:
-											if(flagPrecioAerolineas == 1 || flagPrecioLatam == 1)
-											{
-												volverAtras = printf("Seguro que desea volver atras? s(si)/n(no): ");
-												fflush(stdin);
-												scanf("%c", &volverAtras);
-												flagPrecioDeVuelos = 1;
-											}
-											else
-											{
-												printf("Debe ingresar, al menos, uno de los datos para volver al Menu Principal\n");
-												system("pause");
-											}
-											break;
-									}
+									case 1:
+										verificacionRetorno = getFloat(&precioAerolineas ,"Precio vuelo Aerolineas: $", "El precio no es valido \n\n", 1500000, 1, 3);
+										if(verificacionRetorno == 0)
+										{
+											flagPrecioAerolineas = 1;
+											flagCalculosPrecios = 0;
+										}
+										break;
+									case 2:
+										verificacionRetorno = getFloat(&precioLatam ,"Precio vuelo LATAM: $", "El precio no es valido \n\n", 1500000, 1, 3);
+										if(verificacionRetorno == 0)
+										{
+											flagPrecioLatam = 1;
+											flagCalculosPrecios = 0;
+										}
+										break;
+									case 3:
+										if(flagPrecioAerolineas == 1 || flagPrecioLatam == 1)
+										{
+											volverAtras = printf("Seguro que desea volver atras? s(si)/n(no): ");
+											fflush(stdin);
+											scanf("%c", &volverAtras);
+											flagPrecioDeVuelos = 1;
+										}
+										else
+										{
+											printf("Debe ingresar, al menos, uno de los datos para volver al Menu Principal\n");
+											system("pause");
+										}
+										break;
 								}
+							}
 
-							}while(volverAtras != 's');
+						}while(volverAtras != 's');
 						break;
 					case 3:
 						if(flagPrecioDeVuelos == 1)
