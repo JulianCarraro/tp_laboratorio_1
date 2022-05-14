@@ -33,10 +33,8 @@ int main(void) {
 	char flyCode[LEN_FLYCODE];
 	int flag = 0;
 	Passenger passenger[LEN_PASSENGER];
-	eFlight statusFlight[LEN_STATUSFLIGHT];
 
 	initPassengers(passenger, LEN_PASSENGER);
-	initFlight(statusFlight, LEN_PASSENGER);
 
 	do
 	{
@@ -49,7 +47,7 @@ int main(void) {
 					case 1:
 						printf("\nALTAS\n");
 						if(addPassenger(passenger, LEN_PASSENGER, id, name,
-								lastName, price, typePassenger, flyCode, statusFlight)==0)
+								lastName, price, typePassenger, flyCode)==0)
 						{
 							flag = 1;
 						}
@@ -60,11 +58,11 @@ int main(void) {
 						break;
 					case 2:
 						printf("\nMODIFICAR\n");
-						modifyPassenger(passenger, LEN_PASSENGER, id, statusFlight);
+						modifyPassenger(passenger, LEN_PASSENGER, id);
 						break;
 					case 3:
 						printf("\nBAJA\n");
-						removePassenger(passenger, LEN_PASSENGER, id, statusFlight);
+						bajaPasajero(passenger, LEN_PASSENGER, id);
 						break;
 					case 4:
 						printf("\nINFORMAR\n\n");
@@ -72,9 +70,9 @@ int main(void) {
 						break;
 					case 5:
 						printf("\nCARGA FORZADA\n");
-						if(forceLoad(passenger, statusFlight)==0)
+						if(forceLoad(passenger)==0)
 						{
-							printPassengers(passenger, LEN_PASSENGER, statusFlight, LEN_PASSENGER);
+							printPassengers(passenger, LEN_PASSENGER);
 							flag = 1;
 						}
 						break;
@@ -93,4 +91,3 @@ int main(void) {
 
 	return EXIT_SUCCESS;
 }
-

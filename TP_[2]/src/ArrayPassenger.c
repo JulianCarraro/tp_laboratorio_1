@@ -44,7 +44,7 @@ int initPassengers(Passenger* list, int len)
 }
 
 int addPassenger(Passenger* list, int len, int id, char name[],char
-lastName[],float price,int typePassenger, char flycode[], eFlight * status)
+lastName[],float price,int typePassenger, char flycode[])
 {
 	int retorno = -1;
 	int indexLibre;
@@ -119,14 +119,14 @@ lastName[],float price,int typePassenger, char flycode[], eFlight * status)
 							"Ingrese una opcion: ", "ERROR. Ingreso una opcion incorrecta.\n",
 							3, 1, 5)==0)
 					{
-						status[indexLibre].statusFlight = auxStatus;
+						list[indexLibre].statusFlight = auxStatus;
 						flag = 1;
 					}
 				}
 				else
 				{
-					auxStatus = buscarStatusFlightByFlyCode(list, LEN_STATUSFLIGHT, auxFlyCode, status);
-					status[indexLibre].statusFlight = auxStatus;
+					auxStatus = buscarStatusFlightByFlyCode(list, LEN_STATUSFLIGHT, auxFlyCode);
+					list[indexLibre].statusFlight = auxStatus;
 					flag = 1;
 				}
 				if(flag == 1)
@@ -134,9 +134,8 @@ lastName[],float price,int typePassenger, char flycode[], eFlight * status)
 					strncpy(list[indexLibre].flycode, auxFlyCode, sizeof(list[indexLibre].flycode));
 					list[indexLibre].id = incrementarId();
 					list[indexLibre].isEmpty = 0;
-					status[indexLibre].isEmpty = 0;
 					printTitle();
-					printPassenger(list[indexLibre], status[indexLibre]);
+					printPassenger(list[indexLibre]);
 					retorno = 0;
 					printf("\n¡¡¡¡¡CARGA EXITOSA!!!!!\n\n");
 				}
@@ -167,7 +166,7 @@ int buscarIndexPorIsEmpty(Passenger* list, int len)
 	return retorno;
 }
 
-int modifyPassenger(Passenger* list, int len, int idPassenger, eFlight * status)
+int modifyPassenger(Passenger* list, int len, int idPassenger)
 {
 	int retorno = -1;
 	int index;
@@ -187,7 +186,7 @@ int modifyPassenger(Passenger* list, int len, int idPassenger, eFlight * status)
 	if (list != NULL && len > 0 && idPassenger > 0)
 	{
 
-		printPassengers(list, LEN_PASSENGER, status, LEN_STATUSFLIGHT);
+		printPassengers(list, LEN_PASSENGER);
 
 		if(getInt(&auxId, "\nIngrese el id del asociado que desea modificar: ",
 				"Error, el id no es valido", 4000,
@@ -203,7 +202,7 @@ int modifyPassenger(Passenger* list, int len, int idPassenger, eFlight * status)
 			do
 			{
 				printTitle();
-				printPassenger(list[index], status[index]);
+				printPassenger(list[index]);
 				if(menuModificaciones(&opcionMenu)==0)
 				{
 					switch(opcionMenu)
@@ -246,14 +245,14 @@ int modifyPassenger(Passenger* list, int len, int idPassenger, eFlight * status)
 											"Ingrese una opcion: ", "ERROR. Ingreso una opcion incorrecta.\n",
 											3, 1, 5)==0)
 									{
-										status[index].statusFlight = auxStatus;
+										list[index].statusFlight = auxStatus;
 										flag = 1;
 									}
 								}
 								else
 								{
-									auxStatus = buscarStatusFlightByFlyCode(list, LEN_STATUSFLIGHT, auxFlyCode, status);
-									status[index].statusFlight = auxStatus;
+									auxStatus = buscarStatusFlightByFlyCode(list, LEN_STATUSFLIGHT, auxFlyCode);
+									list[index].statusFlight = auxStatus;
 									flag = 1;
 								}
 								if(flag == 1)
@@ -296,7 +295,7 @@ int findPassengerById(Passenger* list, int len, int id)
 	return retorno;
 }
 
-void printPassenger(Passenger unPassenger, eFlight unStatus)
+void printPassenger(Passenger unPassenger)
 {
 	char tiposDePasajero[5][51] = {"", "PRIMERA CLASE", "BUSSINES", "PREMIUM", "TURISTA"};
 	char statusFlight[4][51] = {"HOLA", "ACTIVO", "DEMORADO", "CANCELADO"};
@@ -304,7 +303,7 @@ void printPassenger(Passenger unPassenger, eFlight unStatus)
 	if(unPassenger.isEmpty == 0)
 	{
 		printf("|%*d|%*s|%*s|%*.2f|%*s|%*s|%*s|\n", -15, unPassenger.id, -15, unPassenger.name, -15, unPassenger.lastName, -16, unPassenger.price, -16, tiposDePasajero[unPassenger.typePassenger], -15,
-				unPassenger.flycode, -15, statusFlight[unStatus.statusFlight]);
+				unPassenger.flycode, -15, statusFlight[unPassenger.statusFlight]);
 	}
 }
 
@@ -316,7 +315,7 @@ void printTitle(){
 	printf("+---------------+---------------+---------------+----------------+----------------+-------------------------------+\n");
 }
 
-int printPassengers(Passenger* list, int len, eFlight * status, int lenFlight)
+int printPassengers(Passenger* list, int len)
 {
 	int retorno = -1;
 
@@ -325,7 +324,7 @@ int printPassengers(Passenger* list, int len, eFlight * status, int lenFlight)
 		printTitle();
 		for(int i = 0; i < LEN_PASSENGER; i++)
 		{
-			printPassenger(list[i], status[i]);
+			printPassenger(list[i]);
 		}
 		printf("+-----------------------------------------------------------------------------------------------------------------+\n");
 		retorno = 0;
@@ -334,17 +333,35 @@ int printPassengers(Passenger* list, int len, eFlight * status, int lenFlight)
 }
 
 
-int removePassenger(Passenger* list, int len, int id, eFlight * status)
+int removePassenger(Passenger* list, int len, int id)
+{
+	int retorno = -1;
+
+	if (list != NULL && len > 0 && id > 0)
+	{
+		for(int i=0; i < len; i++)
+		{
+			if(list[i].isEmpty == 1 && list[i].id == id)
+			{
+				list[i].isEmpty = 0;
+				retorno = 0;
+				break;
+			}
+		}
+	}
+
+	return retorno;
+}
+
+int bajaPasajero(Passenger* list, int len, int id)
 {
 	int retorno = -1;
 	int auxId;
 	int index;
-//	eFlight unStatus[LEN_STATUSFLIGHT];
 
 	if (list != NULL && len > 0 && id > 0)
 	{
-
-		printPassengers(list, len, status, LEN_STATUSFLIGHT);
+		printPassengers(list, len);
 
 		if(getInt(&auxId, "\nIngrese el id del asociado que desea modificar: ",
 				"Error, el id no es valido", 4000,
@@ -357,16 +374,18 @@ int removePassenger(Passenger* list, int len, int id, eFlight * status)
 
 		if (index != -1)
 		{
+			removePassenger(list, len, id);
 			printTitle();
-			printPassenger(list[index], status[index]);
-			list[index].isEmpty = 1;
+			printPassenger(list[index]);
 			retorno = 0;
 			printf("\n¡¡¡¡¡BAJA EXITOSA!!!!!\n\n");
+
 		}
-    	else
-    	{
-    		printf("No hay asociado con ese ID\n");
-    	}
+		else
+		{
+			printf("No encontramos ningun pasajero con ese ID");
+		}
+
 	}
 
 	return retorno;
@@ -498,7 +517,37 @@ int sortPassengersByCode(Passenger* list, int len, int order)
 	return retorno;
 }
 
-int forceLoad(Passenger * list, eFlight * array)
+void printPassengerActives(Passenger unPassenger)
+{
+	char tiposDePasajero[5][51] = {"", "PRIMERA CLASE", "BUSSINES", "PREMIUM", "TURISTA"};
+	char statusFlight[4][51] = {"HOLA", "ACTIVO", "DEMORADO", "CANCELADO"};
+
+	if(unPassenger.isEmpty == 0 && unPassenger.statusFlight == 1)
+	{
+		printf("|%*d|%*s|%*s|%*.2f|%*s|%*s|%*s|\n", -15, unPassenger.id, -15, unPassenger.name, -15, unPassenger.lastName, -16, unPassenger.price, -16, tiposDePasajero[unPassenger.typePassenger], -15,
+				unPassenger.flycode, -15, statusFlight[unPassenger.statusFlight]);
+	}
+}
+
+int printPassengersActive(Passenger* list, int len)
+{
+	int retorno = -1;
+
+	if(list != NULL && len >0)
+	{
+		printTitle();
+		for(int i = 0; i < LEN_PASSENGER; i++)
+		{
+			printPassengerActives(list[i]);
+		}
+		printf("+-----------------------------------------------------------------------------------------------------------------+\n");
+		retorno = 0;
+	}
+	return retorno;
+}
+
+
+int forceLoad(Passenger * list)
 {
 	int retorno = -1;
 	int i;
@@ -506,19 +555,18 @@ int forceLoad(Passenger * list, eFlight * array)
 
 	indexLibre = buscarIndexPorIsEmpty(list, LEN_PASSENGER);
 
-	Passenger lista[LEN_FORCELOAD] = {{3001, "Marcelo", "Gutierrez", 15000, "HF2378", 2, 0},
-			{3002, "Lionel", "Scaloni", 20000, "213203", 3, 0}, {3003, "Lionel", "Messi", 100000, "FL2YD3", 1, 0},
-			{3004, "Cristiano", "Ronaldo", 500000, "2FDS20", 1, 0}, {3005, "Julian", "Carraro", 20000, "213ASD", 2, 0}};
-	eFlight status[LEN_FORCELOAD] = {{"HF2378", 1, 0}, {"213203", 2, 0}, {"FL2YD3", 3, 0}, {"2FDS20", 2, 0}, {"213ASD", 1, 0}};
+	Passenger lista[LEN_FORCELOAD] = {{3001, "Marcelo", "Gutierrez", 15000, "HF2378", 2, 1, 0},
+			{3002, "Lionel", "Scaloni", 20000, "213203", 3, 2, 0}, {3003, "Lionel", "Messi", 100000, "FL2YD3", 1, 3, 0},
+			{3004, "Cristiano", "Ronaldo", 500000, "2FDS20", 1, 2, 0}, {3005, "Julian", "Carraro", 20000, "213ASD", 2, 1, 0}};
+//	eFlight status[LEN_FORCELOAD] = {{"HF2378", 1, 0}, {"213203", 2, 0}, {"FL2YD3", 3, 0}, {"2FDS20", 2, 0}, {"213ASD", 1, 0}};
 
-	if(list != NULL && LEN_FORCELOAD > 0)
+	if(list != NULL && LEN_PASSENGER > 0)
 	{
 		for(i = 0; i < LEN_FORCELOAD; i++)
 		{
 			if (indexLibre != -1)
 			{
 				list[i] = lista[i];
-				array[i] = status[i];
 				retorno = 0;
 			}
 		}
@@ -527,7 +575,7 @@ int forceLoad(Passenger * list, eFlight * array)
 	return retorno;
 }
 
-int contadorAltas(Passenger list[], int len)
+int loadCount(Passenger list[], int len)
 {
 	int contadorAltas = 0;
 	int i;
@@ -543,7 +591,7 @@ int contadorAltas(Passenger list[], int len)
 	return contadorAltas;
 }
 
-float calcularPrecioTotal(Passenger list[], int len)
+float totalPrice(Passenger list[], int len)
 {
 	float total=0;
 	int i;
@@ -559,26 +607,26 @@ float calcularPrecioTotal(Passenger list[], int len)
 	return total;
 }
 
-float calcularPromedio(Passenger list[], int len)
+float calculateAverage(Passenger list[], int len)
 {
 	float promedio;
 	int datosCargados;
 	float total;
 
-	total = calcularPrecioTotal(list, len);
-	datosCargados= contadorAltas(list, len);
+	total = totalPrice(list, len);
+	datosCargados= loadCount(list, len);
 	promedio = total / datosCargados;
 
 	return promedio;
 }
 
-int superanElPromedio(Passenger list[], int len)
+int aboveAverage(Passenger list[], int len)
 {
 	int contador = 0;
 	float promedio;
 	int i;
 
-	promedio = calcularPromedio(list, len);
+	promedio = calculateAverage(list, len);
 
 	for(i = 0; i < len; i++)
 	{
@@ -599,7 +647,6 @@ int informarPasajeros(Passenger list[], int len)
 	float precioTotal;
 	float promedio;
 	int encimaDelPromedio;
-	eFlight unStatus[LEN_STATUSFLIGHT];
 
 	if(menuInformar(&opcionMenu)==0)
 	{
@@ -608,21 +655,21 @@ int informarPasajeros(Passenger list[], int len)
 			case 1:
 				if(sortPassengers(list, len, order)==0)
 				{
-					printPassengers(list, len, unStatus, LEN_STATUSFLIGHT);
+					printPassengers(list, len);
 				}
 				break;
 			case 2:
-				precioTotal = calcularPrecioTotal(list, len);
+				precioTotal = totalPrice(list, len);
 				printf("El precio total de los pasajes es: $%.2f\n", precioTotal);
-				promedio = calcularPromedio(list, len);
+				promedio = calculateAverage(list, len);
 				printf("El promedio total de los pasajes es: $%.2f\n", promedio);
-				encimaDelPromedio = superanElPromedio(list, len);
+				encimaDelPromedio = aboveAverage(list, len);
 				printf("Hay %d pasajero/s que superan el precio promedio\n", encimaDelPromedio);
 				break;
 			case 3:
 				if(sortPassengersByCode(list, len, order)==0)
 				{
-					printPassengers(list, len, unStatus, LEN_STATUSFLIGHT);
+					printPassengersActive(list, len);
 				}
 				break;
 		}
@@ -632,8 +679,22 @@ int informarPasajeros(Passenger list[], int len)
 
 }
 
+int buscarStatusFlightByFlyCode(Passenger list[], int len, char flyCode[]) {
+	int retorno = -1;
+	if (list != NULL && len > 0)
+	{
+		for (int i = 0; i < len; i++)
+		{
+			for(int j = 0; j < len; j++)
+			{
+				if(strncmp(list[i].flycode, flyCode, len) == 0)
+				{
+					retorno = list[i].statusFlight;
+					break;
+				}
+			}
 
-
-
-
-
+		}
+	}
+	return retorno;
+}

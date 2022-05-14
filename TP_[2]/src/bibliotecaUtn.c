@@ -614,7 +614,3 @@ int buscarArrayCharEnArray(Passenger * array, int len, char charABuscar[])
 
     return retorno;
 }
-
-
-
-
