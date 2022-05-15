@@ -11,7 +11,6 @@
 #include <ctype.h>
 #include "bibliotecaUtn.h"
 #include "ArrayPassenger.h"
-#include "ArrayFlights.h"
 
 #define LEN_FORCELOAD 5
 #define LEN_STATUSFLIGHT 2000

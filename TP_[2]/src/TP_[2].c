@@ -59,14 +59,35 @@ int main(void) {
 						break;
 					case 2:
 						printf("\nMODIFICAR\n");
-						modifyPassenger(passenger, LEN_PASSENGER, id);
+						if(hayAlgoCargado(passenger, LEN_PASSENGER)==1)
+						{
+							modifyPassenger(passenger, LEN_PASSENGER, id);
+						}
+						else
+						{
+							printf("No hay nada ningun pasajero para modificar\n");
+						}
 						break;
 					case 3:
 						printf("\nBAJA\n");
-						bajaPasajero(passenger, LEN_PASSENGER, id);
+						if(hayAlgoCargado(passenger, LEN_PASSENGER)==1)
+						{
+							bajaPasajero(passenger, LEN_PASSENGER, id);
+						}
+						else
+						{
+							printf("No hay nada ningun pasajero para borrar\n");
+						}
 						break;
 					case 4:
-						informarPasajeros(passenger, LEN_PASSENGER);
+						if(hayAlgoCargado(passenger, LEN_PASSENGER)==1)
+						{
+							informarPasajeros(passenger, LEN_PASSENGER);
+						}
+						else
+						{
+							printf("No hay nada ningun pasajero informar\n");
+						}
 						break;
 					case 5:
 						if(flagForceLoad == 0)

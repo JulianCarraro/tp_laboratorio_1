@@ -53,4 +53,6 @@ int menuInformar(int * opcionMenu);
 
 int buscarArrayCharEnArray(Passenger * array, int len, char charABuscar[]);
 
+int hayAlgoCargado(Passenger array[], int len);
+
 #endif /* BIBLIOTECAUTN_H_ */

@@ -10,6 +10,7 @@
 #include <string.h>
 #include <ctype.h>
 #include "bibliotecaUtn.h"
+#include "ArrayPassenger.h"
 
 /// @brief --> Esta funcion pide y valida numeros enteros
 ///
@@ -483,7 +484,7 @@ int getCodeChar(char array[], int len, char * mensaje, char * mensajeError,int m
 
 /// @brief --> Esta funcion buscar un array de chars en un array
 ///
-/// @param --> array Este parametro retorna el array encontrado por puntero
+/// @param --> array Puntero al espacio de memoria donde se buscara el array de chars
 /// @param --> len Define el tamaño de cadena
 /// @param --> Recibe el char a buscar
 /// @return --> Esta funcion retorna un 0 si se encontró el char, y un 1 si no fue asi
@@ -505,4 +506,26 @@ int buscarArrayCharEnArray(Passenger * array, int len, char charABuscar[])
     }
 
     return retorno;
+}
+
+/// @brief --> Esta funcion busca en un array si hay datos cargados
+///
+/// @param --> array Puntero al espacio de memoria donde se buscara si hay algo cargado
+/// @param --> len Define el tamaño de cadena
+/// @return --> Esta funcion retorna un 1 si se encontro algo cargado, y un 0 si no fue asi
+int hayAlgoCargado(Passenger array[], int len)
+{
+	int retorno = 0;
+	if (array != NULL && len > 0)
+	{
+		for (int i = 0; i < len; i++)
+		{
+			if (array[i].isEmpty == 0)
+			{
+				retorno = 1;
+				break;
+			}
+		}
+	}
+	return retorno;
 }
