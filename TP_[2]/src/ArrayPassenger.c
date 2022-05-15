@@ -16,11 +16,11 @@
 #define LEN_FORCELOAD 5
 #define LEN_STATUSFLIGHT 2000
 #define LEN_PASSENGER 2000
-#define PRIMERA_CLASE 1
-#define BUSSINES 2
-#define ECONOMICA_PREMIUM 3
-#define ECONOMICA 4
 
+
+/// @brief --> Esta funcion va autoincrementando el id
+///
+/// @return --> Esta funcion retorna el id
 int incrementarId()
 {
     static int id = 1000;
@@ -28,6 +28,10 @@ int incrementarId()
     return id;
 }
 
+/// @brief --> Esta funcion inicializa el array de pasajeros
+///
+/// @param --> list Puntero al espacio de memoria donde se inicializara los datos
+/// @return --> Esta funcion retorna un 0 si se ingresaron datos validos, y un -1 si no son validos
 int initPassengers(Passenger* list, int len)
 {
 	int retorno = -1;
@@ -43,25 +47,33 @@ int initPassengers(Passenger* list, int len)
 	return retorno;
 }
 
+/// @brief --> Esta funcion añade pasajeros al array
+///
+/// @param --> list Puntero al espacio de memoria donde se guardaran los datos
+/// @param --> len Define el largo de la cadena
+/// @param --> id recibe el id
+/// @param --> name recibe el nombre
+/// @param --> lastName recibe el segundo nombre
+/// @param --> price recibe el precio
+/// @param --> typePassenger recibe el tipo de pasajero
+/// @param --> flycode recibe el codigo de vuelo
+/// @return --> Esta funcion retorna un 0 si se ingresaron datos validos, y un -1 si no son validos
 int addPassenger(Passenger* list, int len, int id, char name[],char
 lastName[],float price,int typePassenger, char flycode[])
 {
 	int retorno = -1;
 	int indexLibre;
-//	int otroIndexLibre;
 	char auxName[51];
 	char auxLastName[51];
 	float auxPrice;
 	int auxTypePassenger;
 	char auxFlyCode[10];
 	int auxStatus;
-//	eFlight status[LEN_STATUSFLIGHT];
 	int flag;
 
 	if (list != NULL && len > 0 && name != NULL && lastName != NULL && flycode != NULL)
 	{
 		indexLibre = buscarIndexPorIsEmpty(list, len);
-//		otroIndexLibre = buscarIndexPorIsEmpty(status, len);
 		if (indexLibre != -1)
 		{
 			if(getChars(auxName, sizeof(auxName), "Ingrese un nombre: ", "ERROR. Ingreso un nombre invalido\n\n",
@@ -112,7 +124,6 @@ lastName[],float price,int typePassenger, char flycode[])
 			flag = 0;
 			if(getCodeChar(auxFlyCode, sizeof(auxFlyCode), "\nIngrese el codigo de vuelo (max 10 caracteres): ", "ERROR. Ingreso un codigo de vuelo invalido\n\n" , 3)==0)
 			{
-//				if(buscarArrayCharEnArray(list->flycode, auxFlyCode)==1)
 				if(buscarArrayCharEnArray(list, len, auxFlyCode)==1)
 				{
 					if(getInt(&auxStatus, "\nEstado del vuelo\n1. ACTIVO \n2. DEMORADO\n3. CANCELADO\n"
@@ -147,6 +158,11 @@ lastName[],float price,int typePassenger, char flycode[])
 	return retorno;
 }
 
+/// @brief --> Esta funcion busca un espacio libre en el array
+///
+/// @param --> list Puntero al espacio de memoria donde se buscara el lugar libre
+/// @param --> len Define el tamanio de la cadena
+/// @return --> Esta funcion retorna un index libre
 int buscarIndexPorIsEmpty(Passenger* list, int len)
 {
 	int retorno = -1;
@@ -166,6 +182,12 @@ int buscarIndexPorIsEmpty(Passenger* list, int len)
 	return retorno;
 }
 
+/// @brief --> Esta funcion permite modificar los datos de un pasajero
+///
+/// @param --> list Puntero al espacio de memoria donde se modificaran los datos
+/// @param --> len Define el tamanio de la cadena
+/// @param --> idPassenger recibe el id del pasajero a modificar
+/// @return --> Esta funcion retorna 0 si se modifico correctamente, o -1 si no fue asi
 int modifyPassenger(Passenger* list, int len, int idPassenger)
 {
 	int retorno = -1;
@@ -278,6 +300,12 @@ int modifyPassenger(Passenger* list, int len, int idPassenger)
 	return retorno;
 }
 
+/// @brief --> Esta funcion busca un pasajero por el id
+///
+/// @param --> list Puntero al espacio de memoria donde se buscara el pasajero
+/// @param --> len Define el tamanio de la cadena
+/// @param --> id recibe el id del pasajero a buscar
+/// @return --> Esta funcion retorna el index del pasajero encontrado
 int findPassengerById(Passenger* list, int len, int id)
 {
 	int retorno = -1;
@@ -295,6 +323,10 @@ int findPassengerById(Passenger* list, int len, int id)
 	return retorno;
 }
 
+/// @brief --> Esta funcion muestra un pasajero
+///
+/// @param --> unPassenger Puntero al espacio de memoria donde se buscara el pasajero a mostrar
+/// @return --> Esta funcion no retorna nada
 void printPassenger(Passenger unPassenger)
 {
 	char tiposDePasajero[5][51] = {"", "PRIMERA CLASE", "BUSSINES", "PREMIUM", "TURISTA"};
@@ -307,6 +339,9 @@ void printPassenger(Passenger unPassenger)
 	}
 }
 
+/// @brief --> Esta funcion muestra el titulo
+///
+/// @return --> Esta funcion no retorna nada
 void printTitle(){
 
 
@@ -315,6 +350,11 @@ void printTitle(){
 	printf("+---------------+---------------+---------------+----------------+----------------+-------------------------------+\n");
 }
 
+/// @brief --> Esta funcion muestra todos los pasajeros cargados
+///
+/// @param --> list Puntero al espacio de memoria donde se buscaran los pasajeros a mostrar
+/// @param --> len Define el tamaño de la cadena
+/// @return --> Esta funcion retorna 0 si se verifico correctamente o -1 si no fue asi
 int printPassengers(Passenger* list, int len)
 {
 	int retorno = -1;
@@ -332,7 +372,12 @@ int printPassengers(Passenger* list, int len)
 	return retorno;
 }
 
-
+/// @brief --> Esta funcion permite borrar un pasajero del array
+///
+/// @param --> list Puntero al espacio de memoria donde se borraran los datos
+/// @param --> len Define el tamanio de la cadena
+/// @param --> id recibe el id del pasajero a borrar
+/// @return --> Esta funcion retorna 0 si se modifico correctamente, o -1 si no fue asi
 int removePassenger(Passenger* list, int len, int id)
 {
 	int retorno = -1;
@@ -341,9 +386,9 @@ int removePassenger(Passenger* list, int len, int id)
 	{
 		for(int i=0; i < len; i++)
 		{
-			if(list[i].isEmpty == 1 && list[i].id == id)
+			if(list[i].isEmpty == 0 && list[i].id == id)
 			{
-				list[i].isEmpty = 0;
+				list[i].isEmpty = 1;
 				retorno = 0;
 				break;
 			}
@@ -353,6 +398,12 @@ int removePassenger(Passenger* list, int len, int id)
 	return retorno;
 }
 
+/// @brief --> Esta funcion pide y permite borrar un pasajero del array
+///
+/// @param --> list Puntero al espacio de memoria donde se borraran los datos
+/// @param --> len Define el tamanio de la cadena
+/// @param --> id recibe el id del pasajero a borrar
+/// @return --> Esta funcion retorna 0 si se modifico correctamente, o -1 si no fue asi
 int bajaPasajero(Passenger* list, int len, int id)
 {
 	int retorno = -1;
@@ -374,9 +425,9 @@ int bajaPasajero(Passenger* list, int len, int id)
 
 		if (index != -1)
 		{
-			removePassenger(list, len, id);
 			printTitle();
 			printPassenger(list[index]);
+			removePassenger(list, len, id);
 			retorno = 0;
 			printf("\n¡¡¡¡¡BAJA EXITOSA!!!!!\n\n");
 
@@ -391,6 +442,12 @@ int bajaPasajero(Passenger* list, int len, int id)
 	return retorno;
 }
 
+/// @brief --> Esta funcion ordena los pasajeros por apellido o tipo de pasajero
+///
+/// @param --> list Puntero al espacio de memoria donde se ordenaran los datos
+/// @param --> len Define el tamanio de la cadena
+/// @param --> order recibe el orden del cual se quieren ordenar
+/// @return --> Esta funcion retorna 0 si se ordeno correctamente, o -1 si no fue asi
 int sortPassengers(Passenger* list, int len, int order)
 {
 	int retorno = -1;
@@ -465,6 +522,12 @@ int sortPassengers(Passenger* list, int len, int order)
 	return retorno;
 }
 
+/// @brief --> Esta funcion ordena los pasajeros codigo de vuelo
+///
+/// @param --> list Puntero al espacio de memoria donde se ordenaran los datos
+/// @param --> len Define el tamanio de la cadena
+/// @param --> order recibe el orden del cual se quieren ordenar
+/// @return --> Esta funcion retorna 0 si se ordeno correctamente, o -1 si no fue asi
 int sortPassengersByCode(Passenger* list, int len, int order)
 {
 	int retorno = -1;
@@ -517,6 +580,10 @@ int sortPassengersByCode(Passenger* list, int len, int order)
 	return retorno;
 }
 
+/// @brief --> Esta funcion muestra un pasajero con estado de vuelo activo
+///
+/// @param --> unPassenger Puntero al espacio de memoria donde se buscara el pasajero a mostrar
+/// @return --> Esta funcion no retorna nada
 void printPassengerActives(Passenger unPassenger)
 {
 	char tiposDePasajero[5][51] = {"", "PRIMERA CLASE", "BUSSINES", "PREMIUM", "TURISTA"};
@@ -529,6 +596,11 @@ void printPassengerActives(Passenger unPassenger)
 	}
 }
 
+/// @brief --> Esta funcion muestra todos los pasajeros cargados con estado de vuelo activo
+///
+/// @param --> list Puntero al espacio de memoria donde se buscaran los pasajeros a mostrar
+/// @param --> len Define el tamaño de la cadena
+/// @return --> Esta funcion retorna 0 si se verifico correctamente o -1 si no fue asi
 int printPassengersActive(Passenger* list, int len)
 {
 	int retorno = -1;
@@ -546,7 +618,10 @@ int printPassengersActive(Passenger* list, int len)
 	return retorno;
 }
 
-
+/// @brief --> Esta funcion hardcodea los datos del array
+///
+/// @param --> list Puntero al espacio de memoria donde se cargaran los pasajeros
+/// @return --> Esta funcion retorna 0 si se cargo correctamente o -1 si no fue asi
 int forceLoad(Passenger * list)
 {
 	int retorno = -1;
@@ -564,7 +639,7 @@ int forceLoad(Passenger * list)
 	{
 		for(i = 0; i < LEN_FORCELOAD; i++)
 		{
-			if (indexLibre != -1)
+			if(indexLibre != -1)
 			{
 				list[i] = lista[i];
 				retorno = 0;
@@ -575,22 +650,32 @@ int forceLoad(Passenger * list)
 	return retorno;
 }
 
+/// @brief --> Esta funcion cuenta los pasajeros cargados
+///
+/// @param --> list Puntero al espacio de memoria donde se contaran los pasajeros
+/// @param --> len Define el tamaño de la cadena
+/// @return --> Esta funcion retorna la cantidad de pasajeros cargados
 int loadCount(Passenger list[], int len)
 {
-	int contadorAltas = 0;
+	int contadorPasajeros = 0;
 	int i;
 
 	for(i = 0; i < len; i++)
 	{
 		if(list[i].isEmpty == 0)
 		{
-			contadorAltas++;
+			contadorPasajeros++;
 		}
 	}
 
-	return contadorAltas;
+	return contadorPasajeros;
 }
 
+/// @brief --> Esta funcion calcula el precio total
+///
+/// @param --> list Puntero al espacio de memoria donde se acumularan los precios de los vuelos
+/// @param --> len Define el tamaño de la cadena
+/// @return --> Esta funcion retorna el precio total de los pasajes
 float totalPrice(Passenger list[], int len)
 {
 	float total=0;
@@ -607,6 +692,11 @@ float totalPrice(Passenger list[], int len)
 	return total;
 }
 
+/// @brief --> Esta funcion calcula el promedio total
+///
+/// @param --> list Puntero al espacio de memoria donde se calculara el promedio de los precios de los vuelos
+/// @param --> len Define el tamaño de la cadena
+/// @return --> Esta funcion retorna el promedio total de los pasajes
 float calculateAverage(Passenger list[], int len)
 {
 	float promedio;
@@ -620,6 +710,11 @@ float calculateAverage(Passenger list[], int len)
 	return promedio;
 }
 
+/// @brief --> Esta funcion cuenta los precios que estan por encima del promedio total de los pasajes
+///
+/// @param --> list Puntero al espacio de memoria donde se contara los precios por encima del promedio total
+/// @param --> len Define el tamaño de la cadena
+/// @return --> Esta funcion retorna la cantidad de precios que estan por encima del promedio total
 int aboveAverage(Passenger list[], int len)
 {
 	int contador = 0;
@@ -630,7 +725,7 @@ int aboveAverage(Passenger list[], int len)
 
 	for(i = 0; i < len; i++)
 	{
-		if(list[i].isEmpty == 1 && list[i].price > promedio)
+		if(list[i].isEmpty == 0 && list[i].price > promedio)
 		{
 			contador++;
 		}
@@ -639,6 +734,11 @@ int aboveAverage(Passenger list[], int len)
 	return contador;
 }
 
+/// @brief --> Esta funcion informa los pasajeros segun la forma elegida
+///
+/// @param --> list Puntero al espacio de memoria donde se buscaran los datos a informar
+/// @param --> len Define el tamaño de la cadena
+/// @return --> Esta funcion retorna 0 si se informaron bien los datos o -1 si no fue asi
 int informarPasajeros(Passenger list[], int len)
 {
 	int retorno = -1;
@@ -648,37 +748,51 @@ int informarPasajeros(Passenger list[], int len)
 	float promedio;
 	int encimaDelPromedio;
 
-	if(menuInformar(&opcionMenu)==0)
+	do
 	{
-		switch(opcionMenu)
-		{
-			case 1:
-				if(sortPassengers(list, len, order)==0)
+		printf("\nINFORMAR\n\n");
+		if(menuInformar(&opcionMenu)==0)
+			{
+				switch(opcionMenu)
 				{
-					printPassengers(list, len);
+					case 1:
+						if(sortPassengers(list, len, order)==0)
+						{
+							printPassengers(list, len);
+						}
+						break;
+					case 2:
+						precioTotal = totalPrice(list, len);
+						printf("El precio total de los pasajes es: $%.2f\n", precioTotal);
+						promedio = calculateAverage(list, len);
+						printf("El promedio total de los pasajes es: $%.2f\n", promedio);
+						encimaDelPromedio = aboveAverage(list, len);
+						printf("Hay %d pasajero/s que superan el precio promedio\n", encimaDelPromedio);
+						break;
+					case 3:
+						if(sortPassengersByCode(list, len, order)==0)
+						{
+							printPassengersActive(list, len);
+						}
+						break;
+					case 4:
+						retorno = 0;
+						break;
 				}
-				break;
-			case 2:
-				precioTotal = totalPrice(list, len);
-				printf("El precio total de los pasajes es: $%.2f\n", precioTotal);
-				promedio = calculateAverage(list, len);
-				printf("El promedio total de los pasajes es: $%.2f\n", promedio);
-				encimaDelPromedio = aboveAverage(list, len);
-				printf("Hay %d pasajero/s que superan el precio promedio\n", encimaDelPromedio);
-				break;
-			case 3:
-				if(sortPassengersByCode(list, len, order)==0)
-				{
-					printPassengersActive(list, len);
-				}
-				break;
-		}
-	}
+			}
+	}while(opcionMenu != 4);
+
 
 	return retorno;
 
 }
 
+/// @brief --> Esta funcion busca el estado del vuelo por el codigo del vuelo
+///
+/// @param --> list Puntero al espacio de memoria donde se buscara el estado del vuelo
+/// @param --> len Define el tamanio de la cadena
+/// @param --> flyCode Recibe el codigo de vuelo a buscar
+/// @return --> Esta funcion retorna el estado del vuelo del codigo de vuelo ingresado
 int buscarStatusFlightByFlyCode(Passenger list[], int len, char flyCode[]) {
 	int retorno = -1;
 	if (list != NULL && len > 0)

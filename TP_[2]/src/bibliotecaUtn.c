@@ -11,27 +11,15 @@
 #include <ctype.h>
 #include "bibliotecaUtn.h"
 
-int mostrarArrayChar(char array[], int len) {
-	int i = 0;
-		if (array != NULL && len > 0) {
-			while (array[i] != '\0') {
-				printf("%c", array[i]);
-				i++;
-			}
-		}
-		return 0;
-}
-
-int mostrarArrayInt(int array[], int len) {
-	int i = 0;
-	if (array != NULL && len > 0) {
-		for (i = 0; i < len; i++) {
-			printf("%d ", array[i]);
-		}
-	}
-	return 0;
-}
-
+/// @brief --> Esta funcion pide y valida numeros enteros
+///
+/// @param --> pNumeroIngresado Este parametro retorna el numero ingresado por puntero
+/// @param --> mensaje El mensaje cuando el usuario ingresa datos validos
+/// @param --> mensajeError El mensaje erroneo, en caso de que ingrese datos no validos
+/// @param --> maximo Indica el numero minimo que se puede ingresar
+/// @param --> minimo Indica el numero maximo que se puede ingresar
+/// @param --> maximoDeReintentos Indica el maximo de reintentos de validacion
+/// @return --> Esta funcion retorna un 0 si se ingresaron datos validos, y un -1 si no son validos
 int getInt(int *pNumeroIngresado, char *mensaje, char *mensajeError, int maximo,
 		int minimo, int maximoDeReintentos) {
 
@@ -62,6 +50,15 @@ int getInt(int *pNumeroIngresado, char *mensaje, char *mensajeError, int maximo,
 	return retorno;
 }
 
+/// @brief --> Esta funcion pide y valida numeros flotantes
+///
+/// @param --> pNumeroIngresado Este parametro retorna el numero ingresado por puntero
+/// @param --> mensaje El mensaje cuando el usuario ingresa datos validos
+/// @param --> mensajeError El mensaje erroneo, en caso de que ingrese datos no validos
+/// @param --> maximo Indica el numero minimo que se puede ingresar
+/// @param --> minimo Indica el numero maximo que se puede ingresar
+/// @param --> maximoDeReintentos Indica el maximo de reintentos de validacion
+/// @return --> Esta funcion retorna un 0 si se ingresaron datos validos, y un -1 si no son validos
 int getFloat(float *pNumeroIngresado, char *mensaje, char *mensajeError, int maximo,
 		int minimo, int maximoDeReintentos) {
 
@@ -91,44 +88,13 @@ int getFloat(float *pNumeroIngresado, char *mensaje, char *mensajeError, int max
 	return retorno;
 }
 
-int getArrayInt(int array[], int len, char * mensaje, char * mensajeError,int maximoReintentos) {
-
-	int auxNumeroIngresado;
-	int retorno;
-	int i;
-	retorno = -1;
-
-	if (array != NULL && mensaje != NULL && mensajeError != NULL &&
-			len > 0 && maximoReintentos >= 0) {
-		for(i = 0; i < len; i++)
-		{
-			do
-			{
-				printf("%s", mensaje);
-				if(getNumero(&auxNumeroIngresado) == 1)
-				{
-					array[i] = auxNumeroIngresado;
-					retorno = 0;
-					break;
-				}
-				else
-				{
-					printf("%s", mensajeError);
-					retorno = -1;
-					maximoReintentos--;
-				}
-			}while(maximoReintentos > 0);
-
-			if(maximoReintentos <= 0)
-			{
-				break;
-			}
-		}
-	}
-
-	return retorno;
-}
-
+/// @brief --> Esta funcion pide y valida caracteres
+///
+/// @param --> array Este parametro retorna el caracter ingresado por puntero
+/// @param --> mensaje El mensaje cuando el usuario ingresa datos validos
+/// @param --> mensajeError El mensaje erroneo, en caso de que ingrese datos no validos
+/// @param --> maximoDeReintentos Indica el maximo de reintentos de validacion
+/// @return --> Esta funcion retorna un 0 si se ingresaron datos validos, y un -1 si no son validos
 int getChars(char array[], int len, char * mensaje, char * mensajeError,int maximoReintentos) {
 
 	char auxChar[51];
@@ -169,7 +135,10 @@ int getChars(char array[], int len, char * mensaje, char * mensajeError,int maxi
 	return retorno;
 }
 
-
+/// @brief --> Esta funcion valida si la cadena ingresada es numerica
+///
+/// @param --> cadena Cadena de caracteres a ser analizada
+/// @return --> Esta funcion retorna un 0 si se ingresaron datos validos, y un -1 si no son validos
 int validarNumero(char * cadena)
 {
 	int retorno;
@@ -198,7 +167,10 @@ int validarNumero(char * cadena)
 	return retorno;
 }
 
-
+/// @brief --> Esta funcion valida si la cadena ingresada es numerica
+///
+/// @param --> pResultado Puntero al espacio de memoria donde se dejara el resultado de la funcion
+/// @return --> Esta funcion retorna un 1 si se ingresaron datos validos, y un 0 si no son validos
 int getNumero(int * pResultado)
 {
 	int retorno;
@@ -218,6 +190,11 @@ int getNumero(int * pResultado)
 	return retorno;
 }
 
+
+/// @brief --> Esta funcion valida si la cadena ingresada es numerica flotante
+///
+/// @param --> pResultado Puntero al espacio de memoria donde se dejara el resultado de la funcion
+/// @return --> Esta funcion retorna un 1 si se ingresaron datos validos, y un 0 si no son validos
 int getNumeroFlotante(float * pResultado)
 {
 	int retorno;
@@ -237,6 +214,10 @@ int getNumeroFlotante(float * pResultado)
 	return retorno;
 }
 
+/// @brief --> Esta funcion valida si la cadena ingresada es numerica flotante
+///
+/// @param --> cadena Cadena de caracteres a ser analizada
+/// @return --> Esta funcion retorna un 1 si se ingresaron datos validos, y un 0 si no son validos
 int validarNumeroFlotante(char * cadena)
 {
 	int retorno;
@@ -275,7 +256,11 @@ int validarNumeroFlotante(char * cadena)
 	return retorno;
 }
 
-
+/// @brief --> Lee de stdin hasta que encuentra un '\n' o hasta que haya copiado en cadena * un máximo de 'longitud - 1' caracteres
+///
+/// @param --> cadena Puntero al espacio de memoria donde se copiara la cadena obtenida
+/// @param --> len Define el tamaño de cadena
+/// @return --> Esta funcion retorna un 0 si se ingresaron datos validos, y un 1 si no son validos
 int myGets(char* cadena, int len)
 {
 	int retorno;
@@ -299,68 +284,10 @@ int myGets(char* cadena, int len)
 	return retorno;
 }
 
-
-int borrarImpares(int cadena[], int len)
-{
-	int retorno;
-	int i;
-
-	retorno = 0;
-
-	if(cadena != NULL && len > 0)
-	{
-		for(i=0; i < len; i++)
-		{
-			if(cadena[i] %2 != 0)
-			{
-				cadena[i] = 0;
-			}
-			retorno = 1;
-		}
-	}
-
-	return retorno;
-}
-
-int mostrarNumeros(int array[], int len){
-	int retorno;
-	retorno = -1;
-
-	if(len > 0 && array!=NULL){
-		for(int i = 0; i<len; i++){
-				printf("%d\n", array[i]);
-			}
-		retorno = 0;
-	}
-	return retorno;
-}
-
-int ordenarArray(int pArray[], int len) {
-
-	int retorno = -1;
-	int i;
-	int aux;
-	int estaOrdenado;
-
-	if (pArray != NULL && len > 0) {
-		do {
-			estaOrdenado = 1;
-			len--;
-			for (i = 0; i < len; i++) {
-				if (pArray[i] < pArray[i + 1]) {
-					aux = pArray[i];
-					pArray[i] = pArray[i + 1];
-					pArray[i + 1] = aux;
-					estaOrdenado = 0;
-				}
-			}
-		}while(estaOrdenado == 0);
-		retorno = 0;
-	}
-
-	return retorno;
-}
-
+/// @brief --> Esta funcion pide y muestra el menu principal
+///
+/// @param --> opcionMenu Puntero al espacio de memoria donde se copiara la opcion del menu obtenida
+/// @return --> Esta funcion retorna un 0 si se ingresaron datos validos, y un -1 si no son validos
 int menuPrincipal(int * opcionMenu)
 {
 	int auxOpcion;
@@ -386,6 +313,10 @@ int menuPrincipal(int * opcionMenu)
 
 }
 
+/// @brief --> Esta funcion pide y muestra el menu de modificaciones
+///
+/// @param --> opcionMenu Puntero al espacio de memoria donde se copiara la opcion del menu obtenida
+/// @return --> Esta funcion retorna un 0 si se ingresaron datos validos, y un -1 si no son validos
 int menuModificaciones(int * opcionMenu)
 {
 	int auxOpcion;
@@ -411,6 +342,10 @@ int menuModificaciones(int * opcionMenu)
 
 }
 
+/// @brief --> Esta funcion pide y muestra el menu de informar
+///
+/// @param --> opcionMenu Puntero al espacio de memoria donde se copiara la opcion del menu obtenida
+/// @return --> Esta funcion retorna un 0 si se ingresaron datos validos, y un -1 si no son validos
 int menuInformar(int * opcionMenu)
 {
 	int auxOpcion;
@@ -433,6 +368,10 @@ int menuInformar(int * opcionMenu)
 
 }
 
+/// @brief --> Esta funcion valida si la cadena ingresada tiene solo letras
+///
+/// @param --> cadena Cadena de caracteres a ser analizada
+/// @return --> Esta funcion retorna un 1 si se ingresaron datos validos, y un 0 si no son validos
 int validarLetras(char cadena[])
 {
 	int retorno=0;
@@ -460,21 +399,10 @@ int validarLetras(char cadena[])
 	return retorno;
 }
 
-int getDni(int * dni)
-{
-	int auxDni;
-	int retorno = -1;
-
-	if(getInt(&auxDni, "Ingrese su DNI: ", "ERROR. Ingresaste un DNI incorrecto.\n\n",
-			100000000, 999999, 3)==0)
-	{
-		*dni = auxDni;
-		retorno = 0;
-	}
-
-	return retorno;
-}
-
+/// @brief --> Esta funcion valida si la cadena ingresada tiene solo letras
+///
+/// @param --> flyCode Cadena de caracteres a ser analizada
+/// @return --> Esta funcion retorna un 1 si se ingresaron datos validos, y un 0 si no son validos
 int validarFlyCode(char flyCode[])
 {
 	int retorno = -1;
@@ -486,11 +414,11 @@ int validarFlyCode(char flyCode[])
 		{
 			if((flyCode[i]>='A' && flyCode[i]<='Z') || (flyCode[i]>='a' && flyCode[i]<='z') || (flyCode[i] <= '9' && flyCode[i] >= '0'))
 			{
-				retorno=1;
+				retorno = 1;
 			}
 			else
 			{
-				retorno=0;
+				retorno = 0;
 				break;
 			}
 		}
@@ -500,6 +428,13 @@ int validarFlyCode(char flyCode[])
 	return retorno;
 }
 
+/// @brief --> Esta funcion pide y valida numeros y caracteres
+///
+/// @param --> array Este parametro retorna el caracter y/o numero ingresado por puntero
+/// @param --> mensaje El mensaje cuando el usuario ingresa datos validos
+/// @param --> mensajeError El mensaje erroneo, en caso de que ingrese datos no validos
+/// @param --> maximoDeReintentos Indica el maximo de reintentos de validacion
+/// @return --> Esta funcion retorna un 0 si se ingresaron datos validos, y un -1 si no son validos
 int getCodeChar(char array[], int len, char * mensaje, char * mensajeError,int maximoReintentos) {
 
 	char auxChar[10];
@@ -546,52 +481,12 @@ int getCodeChar(char array[], int len, char * mensaje, char * mensajeError,int m
 	return retorno;
 }
 
-
-int buscarCharEnArray(char array[], int len, char charABuscar[])
-{
-    int retorno = 1;
-
-    if(array != NULL && len > 0)
-    {
-    	for(int i = 0; i < len; i++)
-        {
-            if(array[i] == charABuscar[i])
-            {
-                retorno = 0;
-                break;
-            }
-        }
-    }
-
-    return retorno;
-}
-
-//int buscarArrayCharEnArray(char array[], char charABuscar[])
-//{
-//    int retorno = 1;
-//    char arrayUno = strlen(array);
-//    char buscado = strlen(charABuscar);
-//
-//    if(array != NULL && charABuscar != NULL)
-//    {
-//    	printf("EntreUno\n");
-//    	if(arrayUno == buscado)
-//    	{
-//    		printf("Entre\n");
-//        	for(int i = 0; i < arrayUno; i++)
-//            {
-//				if(strncmp(&array[i], charABuscar, buscado) == 0)
-//				{
-//					retorno = 0;
-//					break;
-//				}
-//            }
-//    	}
-//    }
-//
-//    return retorno;
-//}
-
+/// @brief --> Esta funcion buscar un array de chars en un array
+///
+/// @param --> array Este parametro retorna el array encontrado por puntero
+/// @param --> len Define el tamaño de cadena
+/// @param --> Recibe el char a buscar
+/// @return --> Esta funcion retorna un 0 si se encontró el char, y un 1 si no fue asi
 int buscarArrayCharEnArray(Passenger * array, int len, char charABuscar[])
 {
     int retorno = 1;
@@ -599,17 +494,14 @@ int buscarArrayCharEnArray(Passenger * array, int len, char charABuscar[])
 
     if(array != NULL && charABuscar != NULL)
     {
-//    	if(len == buscado)
-//    	{
-        	for(int i = 0; i < len; i++)
-            {
-				if(strncmp(array[i].flycode, charABuscar, buscado) == 0)
-				{
-					retorno = 0;
-					break;
-				}
-            }
-//    	}
+		for(int i = 0; i < len; i++)
+		{
+			if(strncmp(array[i].flycode, charABuscar, buscado) == 0)
+			{
+				retorno = 0;
+				break;
+			}
+		}
     }
 
     return retorno;

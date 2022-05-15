@@ -32,6 +32,7 @@ int main(void) {
 	int typePassenger = 0;
 	char flyCode[LEN_FLYCODE];
 	int flag = 0;
+	int flagForceLoad = 0;
 	Passenger passenger[LEN_PASSENGER];
 
 	initPassengers(passenger, LEN_PASSENGER);
@@ -65,15 +66,22 @@ int main(void) {
 						bajaPasajero(passenger, LEN_PASSENGER, id);
 						break;
 					case 4:
-						printf("\nINFORMAR\n\n");
 						informarPasajeros(passenger, LEN_PASSENGER);
 						break;
 					case 5:
-						printf("\nCARGA FORZADA\n");
-						if(forceLoad(passenger)==0)
+						if(flagForceLoad == 0)
 						{
-							printPassengers(passenger, LEN_PASSENGER);
-							flag = 1;
+							printf("\nCARGA FORZADA\n");
+							if(forceLoad(passenger)==0)
+							{
+								printPassengers(passenger, LEN_PASSENGER);
+								flag = 1;
+								flagForceLoad = 1;
+							}
+						}
+						else
+						{
+							printf("Ya se ingreso la carga forzada!!\n");
 						}
 						break;
 					case 6:

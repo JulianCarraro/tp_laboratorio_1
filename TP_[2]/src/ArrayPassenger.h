@@ -7,7 +7,6 @@
 
 #ifndef PASSENGER_H_
 #define PASSENGER_H_
-#include "ArrayFlights.h"
 
 struct
 {
@@ -34,13 +33,9 @@ void printPassenger(Passenger unPassenger);
 
 int printPassengers(Passenger* list, int len);
 
-//int modifyPassenger(Passenger* list, int len, int idPassenger);
-
 int modifyPassenger(Passenger* list, int len, int idPassenger);
 
 int findPassengerById(Passenger* list, int len, int id);
-
-//int removePassenger(Passenger* list, int len, int id);
 
 int removePassenger(Passenger* list, int len, int id);
 
@@ -65,8 +60,6 @@ float totalPrice(Passenger list[], int len);
 float calculateAverage(Passenger list[], int len);
 
 int aboveAverage(Passenger list[], int len);
-
-//int informarPasajeros(Passenger list[], int len);
 
 int informarPasajeros(Passenger list[], int len);
 
