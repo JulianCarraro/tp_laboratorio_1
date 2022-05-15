@@ -65,4 +65,5 @@ int informarPasajeros(Passenger list[], int len);
 
 int buscarStatusFlightByFlyCode(Passenger list[], int len, char flyCode[]);
 
+
 #endif /* PASSENGER_H_ */

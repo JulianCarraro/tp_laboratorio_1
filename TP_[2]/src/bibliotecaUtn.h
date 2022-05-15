@@ -9,7 +9,6 @@
 #define BIBLIOTECAUTN_H_
 
 #include "ArrayPassenger.h"
-#include "ArrayFlights.h"
 
 int mostrarArrayChar(char array[], int len);
 
