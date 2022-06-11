@@ -26,12 +26,14 @@ int main() {
 	int option = 0;
 	char respuesta;
 	int flag;
-	int flagCargaTexto;
+	int flagCargaArchivo;
+	int flagSave;
 
 	LinkedList *lista = ll_newLinkedList();
 	respuesta = 'n';
 	flag = 0;
-	flagCargaTexto = 0;
+	flagCargaArchivo = 0;
+	flagSave = 0;
 
 	do
 	{
@@ -42,25 +44,48 @@ int main() {
 				switch(option)
 				{
 					case 1:
-						if(controller_loadFromText("data.csv", lista)==0)
+						if(flagCargaArchivo == 0)
 						{
-							printf("\nSe han cargado los pasajeros correctamente (modo texto)\n");
-							flag = 1;
-							flagCargaTexto = 1;
+							if(controller_loadFromText("data.csv", lista)==0)
+							{
+								printf("\nSe han cargado los pasajeros correctamente (modo texto)\n");
+								flag = 1;
+								flagCargaArchivo = 1;
+								if(flagSave == 1)
+								{
+									flagSave = 0;
+								}
+							}
+							else
+							{
+								printf("\nERROR al cargar el archivo (modo texto)\n");
+							}
 						}
 						else
 						{
-							printf("\nERROR al cargar el archivo (modo texto)\n");
+							printf("\nYa has cargado los pasajeros\n");
 						}
 						break;
 					case 2:
-						if(controller_loadFromBinary("data.bin", lista)==0)
+						if(flagCargaArchivo == 0)
 						{
-							printf("\nSe han cargado los pasajeros correctamente (modo binario)\n");
+							if(controller_loadFromBinary("data.bin", lista)==0)
+							{
+								printf("\nSe han cargado los pasajeros correctamente (modo binario)\n");
+								flagCargaArchivo = 1;
+								if(flagSave == 1)
+								{
+									flagSave = 0;
+								}
+							}
+							else
+							{
+								printf("\nERROR al cargar el archivo (modo binario)\n");
+							}
 						}
 						else
 						{
-							printf("\nERROR al cargar el archivo (modo binario)\n");
+							printf("\nYa has cargado los pasajeros\n");
 						}
 						break;
 					case 3:
@@ -68,38 +93,59 @@ int main() {
 						{
 							printf("\nSe ha añadido correctamente el pasajero\n");
 							flag = 1;
+							if(flagSave == 1)
+							{
+								flagSave = 0;
+							}
 						}
 						break;
 					case 4:
 						if(controller_editPassenger(lista)==0)
 						{
 							printf("\nSe han guardado los cambios correctamente\n");
+							if(flagSave == 1)
+							{
+								flagSave = 0;
+							}
 						}
 						break;
 					case 5:
 						if(controller_removePassenger(lista)==0)
 						{
 							printf("\nSe ha dado de baja el pasajero\n");
+							if(flagSave == 1)
+							{
+								flagSave = 0;
+							}
 						}
 						break;
 					case 6:
 						if(controller_ListPassenger(lista)==-1)
 						{
 							printf("\nNo hay pasajeros para mostrar\n");
+							if(flagSave == 1)
+							{
+								flagSave = 0;
+							}
 						}
 						break;
 					case 7:
 						if(controller_sortPassenger(lista)==0)
 						{
 							printf("\nLISTAR los pasajeros para ver los cambios realizados\n");
+							if(flagSave == 1)
+							{
+								flagSave = 0;
+							}
 						}
 						break;
 					case 8:
-						if(flagCargaTexto == 1)
+						if(flagCargaArchivo == 1)
 						{
 							if(controller_saveAsText("data.csv", lista)==0)
 							{
 								printf("\nSe guardaron los datos de los pasajeros correctamente (modo texto)\n");
+								flagSave = 1;
 							}
 							else
 							{
@@ -112,18 +158,33 @@ int main() {
 						}
 						break;
 					case 9:
-						if(controller_saveAsBinary("data.bin", lista)==0)
+						if(flagCargaArchivo == 1)
 						{
-							printf("\nSe guardaron los datos de los pasajeros correctamente (modo binario)\n");
-						}
-						else
-						{
-							printf("\nERROR al guardar el archivo (modo binario)\n");
+							if(controller_saveAsBinary("data.bin", lista)==0)
+							{
+								printf("\nSe guardaron los datos de los pasajeros correctamente (modo binario)\n");
+								flagSave = 1;
+							}
+							else
+							{
+								printf("\nERROR al guardar el archivo (modo binario)\n");
+							}
 						}
 						break;
 					case 10:
-						getChars(&respuesta, sizeof(respuesta), "¿Desea salir del programa? s(si) o n(no): ",
-								"Ingreso un caracter invalido\n", 3);
+						if(flag == 0 || flagSave == 1)
+						{
+							getChars(&respuesta, sizeof(respuesta), "¿Desea salir del programa? s(si) o n(no): ",
+									"Ingreso un caracter invalido\n", 3);
+							if(respuesta == 's')
+							{
+								ll_deleteLinkedList(lista);
+							}
+						}
+						else
+						{
+							printf("\nDebe guardar los datos para poder salir\n");
+						}
 						break;
 				}
 			}
