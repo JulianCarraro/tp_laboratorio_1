@@ -67,9 +67,7 @@ int Passenger_findLastId(char * path, char * id);
 int Passenger_increaseId(char * id);
 int Passenger_writeNewId(char * path, char * id);
 int Passenger_findPassengerById(LinkedList* pArrayListPassenger, int idABuscar);
-//int convertTypePassengerToInt(char typePassenger[]);
 int convertTypePassengerToInt(char typePassenger[], int * typePassengerInt);
-//int convertFlightStatusToInt(char flightStatus[]);
 int convertFlightStatusToInt(char flightStatus[], int * flightStatusInt);
 
 int convertTypePassengerToChar(int typePassengerInt,char typePassenger[]);

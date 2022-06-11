@@ -20,6 +20,8 @@ int controller_loadFromText(char* path , LinkedList* pArrayListPassenger)
 	int retorno = -1;
 	FILE * pFile;
 
+	pFile = NULL;
+
 	if(pArrayListPassenger != NULL && path != NULL)
 	{
 		pFile = fopen(path, "r");
@@ -46,7 +48,26 @@ int controller_loadFromText(char* path , LinkedList* pArrayListPassenger)
  */
 int controller_loadFromBinary(char* path , LinkedList* pArrayListPassenger)
 {
-    return 1;
+	int retorno = -1;
+	FILE * pFile;
+
+	pFile = NULL;
+
+	if(path != NULL && pArrayListPassenger != NULL)
+	{
+		pFile = fopen(path, "rb");
+		if(pFile != NULL)
+		{
+			if(parser_PassengerFromBinary(pFile , pArrayListPassenger)==0)
+			{
+				retorno = 0;
+			}
+		}
+	}
+
+	fclose(pFile);
+
+    return retorno;
 }
 
 /** \brief Alta de pasajero
@@ -104,24 +125,29 @@ int controller_editPassenger(LinkedList* pArrayListPassenger)
 
 	if(pArrayListPassenger != NULL)
 	{
-		controller_ListPassenger(pArrayListPassenger);
-
-		if(getInt(&auxId, "\nIngrese el id del asociado que desea modificar: ",
-				"Error, el id no es valido", 9000,
-				1, 3)==0)
+		if(controller_ListPassenger(pArrayListPassenger)==0)
 		{
-			index = Passenger_findPassengerById(pArrayListPassenger, auxId);
+			if(getInt(&auxId, "\nIngrese el id del asociado que desea modificar: ",
+							"Error, el id no es valido", 9000,
+							1, 3)==0)
+			{
+				index = Passenger_findPassengerById(pArrayListPassenger, auxId);
 
-			if(index != -1)
-			{
-				auxPassenger = (Passenger*)ll_get(pArrayListPassenger, index);
-				Passenger_edit(auxPassenger);
-				retorno = 0;
+				if(index != -1)
+				{
+					auxPassenger = (Passenger*)ll_get(pArrayListPassenger, index);
+					Passenger_edit(auxPassenger);
+					retorno = 0;
+				}
+				else
+				{
+					printf("No se encontro un pasajero con ese ID\n");
+				}
 			}
-			else
-			{
-				printf("No se encontro un pasajero con ese ID\n");
-			}
+		}
+		else
+		{
+			printf("\nNo hay pasajeros para modificar\n");
 		}
 	}
 
@@ -145,35 +171,45 @@ int controller_removePassenger(LinkedList* pArrayListPassenger)
 
 	if(pArrayListPassenger != NULL)
 	{
-		controller_ListPassenger(pArrayListPassenger);
-
-		if(getInt(&auxId, "\nIngrese el id del asociado que desea dar de baja: ",
-				"Error, el id no es valido", 9000,
-				1, 3)==0)
+		if(controller_ListPassenger(pArrayListPassenger)==0)
 		{
-			index = Passenger_findPassengerById(pArrayListPassenger, auxId);
-
-			if(index != -1)
+			if(getInt(&auxId, "\nIngrese el id del asociado que desea dar de baja: ",
+							"Error, el id no es valido", 9000,
+							1, 3)==0)
 			{
-				auxPassenger = (Passenger*)ll_get(pArrayListPassenger, index);
-				printTitle();
-				Passenger_printOne(auxPassenger);
-				if(getChars(&respuesta, sizeof(respuesta), "\n¿Esta seguro que desea eliminar al pasajero? s(si) o n(no): ",
-											"Ingreso un caracter invalido\n", 3)==0)
+				index = Passenger_findPassengerById(pArrayListPassenger, auxId);
+
+				if(index != -1)
 				{
-					if(respuesta == 's')
+					auxPassenger = (Passenger*)ll_get(pArrayListPassenger, index);
+					printTitle();
+					Passenger_printOne(auxPassenger);
+					if(getChars(&respuesta, sizeof(respuesta), "\n¿Esta seguro que desea eliminar al pasajero? s(si) o n(no): ",
+												"Ingreso un caracter invalido\n", 3)==0)
 					{
-						ll_remove(pArrayListPassenger, index);
-						Passenger_delete(auxPassenger);
-						retorno = 0;
+						if(respuesta == 's')
+						{
+							ll_remove(pArrayListPassenger, index);
+							Passenger_delete(auxPassenger);
+							retorno = 0;
+						}
+						else
+						{
+							printf("\nNo se ha dado de baja el pasajero\n");
+						}
 					}
 				}
-			}
-			else
-			{
-				printf("No se encontro un pasajero con ese ID\n");
+				else
+				{
+					printf("No se encontro un pasajero con ese ID\n");
+				}
 			}
 		}
+		else
+		{
+			printf("\nNo hay pasajeros para dar de baja\n");
+		}
+
 	}
 
     return retorno;
@@ -195,11 +231,15 @@ int controller_ListPassenger(LinkedList* pArrayListPassenger)
 	if(pArrayListPassenger != NULL)
 	{
 		tamanio = ll_len(pArrayListPassenger);
-		printTitle();
-		for(int i = 0; i < tamanio; i++)
+		if(tamanio > 0)
 		{
-			auxPassenger = (Passenger*)ll_get(pArrayListPassenger, i);
-			Passenger_printOne(auxPassenger);
+			printTitle();
+			for(int i = 0; i < tamanio; i++)
+			{
+				auxPassenger = (Passenger*)ll_get(pArrayListPassenger, i);
+				Passenger_printOne(auxPassenger);
+			}
+			retorno = 0;
 		}
 	}
 
@@ -218,61 +258,88 @@ int controller_sortPassenger(LinkedList* pArrayListPassenger)
 	int retorno = -1;
 	int order;
 	int opcionMenu;
-	char respuesta;
 
 	if(pArrayListPassenger != NULL)
 	{
-		do
+		if(controller_ListPassenger(pArrayListPassenger)==0)
 		{
-			if(menuOrdenamiento(&opcionMenu)==0)
+			do
 			{
-				if(opcionMenu != 8 && getInt(&order, "\n1. DESCENDENTE\n2. ASCENDENTE\nElige la forma de la cual desea ordenarlo: ",
-						"ERROR. Ingreso una opcion incorrecta.", 2, 1, 3)==0)
+				if(menuOrdenamiento(&opcionMenu)==0)
 				{
-					order--;
-					printf("\n¡¡¡AGUARDE UN MOMENTO!!!\n");
-					switch(opcionMenu)
+					if(opcionMenu != 8 && getInt(&order, "\n1. DESCENDENTE\n2. ASCENDENTE\nElige la forma de la cual desea ordenarlo: ",
+							"ERROR. Ingreso una opcion incorrecta.", 2, 1, 3)==0)
 					{
-						case 1:
-							printf("Ordenando los pasajeros por ID...");
-							ll_sort(pArrayListPassenger, Passenger_compareId, order);
-							break;
-						case 2:
-							printf("Ordenando los pasajeros por NOMBRE...");
-							ll_sort(pArrayListPassenger, Passenger_compareName, order);
-							break;
-						case 3:
-							printf("Ordenando los pasajeros por APELLIDO...");
-							ll_sort(pArrayListPassenger, Passenger_compareLastName, order);
-							break;
-						case 4:
-							printf("Ordenando los pasajeros por PRECIO...");
-							ll_sort(pArrayListPassenger, Passenger_comparePrice, order);
-							break;
-						case 5:
-							printf("Ordenando los pasajeros por CODIGO DE VUELO...");
-							ll_sort(pArrayListPassenger, Passenger_compareFlyCode, order);
-							break;
-						case 6:
-							printf("Ordenando los pasajeros por TIPO DE PASAJERO...");
-							ll_sort(pArrayListPassenger, Passenger_compareTypePassenger, order);
-							break;
-						case 7:
-							printf("Ordenando los pasajeros por ESTADO DEL VUELO...");
-							ll_sort(pArrayListPassenger, Passenger_compareStatusFlight, order);
-							break;
-						case 8:
-							if(getChars(&respuesta, sizeof(respuesta), "\n¿Desea volver al menu principal? s(si) o n(no): ",
-									"Ingreso un caracter invalido\n", 3)==0)
-							{
-								retorno = 0;
-							}
-							break;
+						order--;
+						printf("\n¡¡¡AGUARDE UN MOMENTO!!!\n");
+						switch(opcionMenu)
+						{
+							case 1:
+								printf("Ordenando los pasajeros por ID...\n");
+								if(ll_sort(pArrayListPassenger, Passenger_compareId, order)==0)
+								{
+									printf("\nSe han ordenado los pasajeros correctamente\n");
+									retorno = 0;
+								}
+								break;
+							case 2:
+								printf("Ordenando los pasajeros por NOMBRE...");
+								if(ll_sort(pArrayListPassenger, Passenger_compareName, order)==0)
+								{
+									printf("\nSe han ordenado los pasajeros correctamente\n");
+									retorno = 0;
+								}
+								break;
+							case 3:
+								printf("Ordenando los pasajeros por APELLIDO...");
+								if(ll_sort(pArrayListPassenger, Passenger_compareLastName, order)==0)
+								{
+									printf("\nSe han ordenado los pasajeros correctamente\n");
+									retorno = 0;
+								}
+								break;
+							case 4:
+								printf("Ordenando los pasajeros por PRECIO...");
+								if(ll_sort(pArrayListPassenger, Passenger_comparePrice, order)==0)
+								{
+									printf("\nSe han ordenado los pasajeros correctamente\n");
+									retorno = 0;
+								}
+								break;
+							case 5:
+								printf("Ordenando los pasajeros por CODIGO DE VUELO...");
+								if(ll_sort(pArrayListPassenger, Passenger_compareFlyCode, order)==0)
+								{
+									printf("\nSe han ordenado los pasajeros correctamente\n");
+									retorno = 0;
+								}
+								break;
+							case 6:
+								printf("Ordenando los pasajeros por TIPO DE PASAJERO...");
+								if(ll_sort(pArrayListPassenger, Passenger_compareTypePassenger, order)==0)
+								{
+									printf("\nSe han ordenado los pasajeros correctamente\n");
+									retorno = 0;
+								}
+								break;
+							case 7:
+								printf("Ordenando los pasajeros por ESTADO DEL VUELO...");
+								if(ll_sort(pArrayListPassenger, Passenger_compareStatusFlight, order)==0)
+								{
+									printf("\nSe han ordenado los pasajeros correctamente\n");
+									retorno = 0;
+								}
+								break;
+						}
 					}
 				}
-			}
 
-		}while(opcionMenu != 8);
+			}while(opcionMenu != 8);
+		}
+		else
+		{
+			printf("\nNo hay pasajeros para ordenar\n");
+		}
 	}
 
     return retorno;
@@ -301,6 +368,8 @@ int controller_saveAsText(char* path , LinkedList* pArrayListPassenger)
 	int auxStatusFlight;
 	char statusFlight[256];
 	FILE * pFile;
+
+	pFile = NULL;
 
 	if(path != NULL && pArrayListPassenger != NULL)
 	{
@@ -343,6 +412,8 @@ int controller_saveAsBinary(char* path , LinkedList* pArrayListPassenger)
 	int tamanio;
 	FILE * pFile;
 
+	pFile = NULL;
+
 	if(path != NULL && pArrayListPassenger != NULL)
 	{
 		pFile = fopen(path, "wb");
@@ -363,6 +434,5 @@ int controller_saveAsBinary(char* path , LinkedList* pArrayListPassenger)
 
     return retorno;
 }
-
 
 

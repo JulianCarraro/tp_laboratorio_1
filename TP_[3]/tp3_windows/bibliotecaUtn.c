@@ -443,7 +443,7 @@ int menuModificaciones(int * opcionMenu)
 
 }
 
-/// @brief --> Esta funcion pide y muestra el menu de informar
+/// @brief --> Esta funcion pide y muestra el menu de ordenar
 ///
 /// @param --> opcionMenu Puntero al espacio de memoria donde se copiara la opcion del menu obtenida
 /// @return --> Esta funcion retorna un 0 si se ingresaron datos validos, y un -1 si no son validos
@@ -586,5 +586,6 @@ int getCodeChar(char array[], int len, char * mensaje, char * mensajeError,int m
 
 	return retorno;
 }
+
 
 

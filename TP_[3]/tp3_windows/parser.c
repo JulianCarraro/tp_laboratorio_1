@@ -37,8 +37,14 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 
 				if(aPassenger != NULL)
 				{
-					ll_add(pArrayListPassenger, aPassenger);
-					retorno = 0;
+					if(ll_add(pArrayListPassenger, aPassenger)==0)
+					{
+						retorno = 0;
+					}
+					else
+					{
+						Passenger_delete(aPassenger);
+					}
 				}
 			}
 			else
@@ -62,6 +68,31 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
  */
 int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger)
 {
+	int retorno = -1;
+	Passenger * aPassenger;
 
-    return 1;
+	if(pFile != NULL && pArrayListPassenger != NULL)
+	{
+		while(!feof(pFile))
+		{
+			aPassenger = Passenger_new();
+			if(aPassenger != NULL)
+			{
+				if(fread(aPassenger, sizeof(aPassenger), 1, pFile)==1)
+				{
+					if(ll_add(pArrayListPassenger, aPassenger)==0)
+					{
+						retorno = 0;
+					}
+					else
+					{
+						Passenger_delete(aPassenger);
+					}
+				}
+			}
+		}
+
+	}
+    return retorno;
 }
+

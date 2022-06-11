@@ -11,16 +11,9 @@
 #include <string.h>
 #include "bibliotecaUtn.h"
 
-
-#define PRIMERA_CLASE 1
-#define CLASE_BUSSINES 2
-#define CLASE_ECONOMICAPREMIUM 3
-#define CLASE_TURISTA 4
-
-#define ACTIVO 1
-#define DEMORADO 2
-#define CANCELADO 3
-
+/// @brief --> Esta funcion reserva espacio de memoria a un pasajero
+///
+/// @return --> Esta funcion retorna el puntero al espacio de memoria
 Passenger* Passenger_new()
 {
 	Passenger *espacioEnMemoria;
@@ -30,6 +23,16 @@ Passenger* Passenger_new()
 	return espacioEnMemoria;
 }
 
+/// @brief --> Esta funcion setea todos los datos ingresados
+///
+/// @param --> idStr Toma el id y lo retorna por referencia
+/// @param --> nombreStr Toma el nombre y lo retorna por referencia
+/// @param --> apellidoStr Toma el apellido y lo retorna por referencia
+/// @param --> price Toma el precio y lo retorna por referencia
+/// @param --> tipoPasajeroStr Toma el tipo de pasajero y lo retorna por referencia
+/// @param --> codigoVuelostr Toma el codigo de vuelo y lo retorna por referencia
+/// @param --> statusFlight Toma el estado de vuelo y lo retorna por referencia
+/// @return --> Esta funcion retorna el puntero al pasajero
 Passenger* Passenger_newParametros(char* idStr,char* nombreStr, char * apellidoStr, char * price, char* tipoPasajeroStr, char * codigoVuelostr, char * statusFlight)
 {
 	Passenger *puntPassenger;
@@ -41,13 +44,14 @@ Passenger* Passenger_newParametros(char* idStr,char* nombreStr, char * apellidoS
 	if(puntPassenger != NULL && nombreStr != NULL && apellidoStr != NULL && price != NULL
 			&& tipoPasajeroStr != NULL && codigoVuelostr != NULL && statusFlight != NULL)
 	{
+
 		if(convertTypePassengerToInt(tipoPasajeroStr, &auxTypePassenger)==-1)
 		{
 			auxTypePassenger = atoi(tipoPasajeroStr);
 		}
 		if(convertFlightStatusToInt(statusFlight, &auxFlightStatus)==-1)
 		{
-			auxFlightStatus = atoi(tipoPasajeroStr);
+			auxFlightStatus = atoi(statusFlight);
 		}
 
 		if(Passenger_setId(puntPassenger, atoi(idStr))==-1 || Passenger_setNombre(puntPassenger, nombreStr)==-1 ||
@@ -58,18 +62,15 @@ Passenger* Passenger_newParametros(char* idStr,char* nombreStr, char * apellidoS
 			Passenger_delete(puntPassenger);
 		}
 
-//		Passenger_setId(puntPassenger, atoi(idStr));
-//		Passenger_setNombre(puntPassenger, nombreStr);
-//		Passenger_setApellido(puntPassenger, apellidoStr);
-//		Passenger_setPrecio(puntPassenger, atof(price));
-//		Passenger_setTipoPasajero(puntPassenger, auxTypePassenger);
-//		Passenger_setCodigoVuelo(puntPassenger, codigoVuelostr);
-//		Passenger_setEstadoVuelo(puntPassenger, auxFlightStatus);
 	}
 
 	return puntPassenger;
 }
 
+/// @brief --> Esta funcion libera el espacio de memoria
+///
+/// @param --> this Toma el pasajero y lo retorna por referencia
+/// @return --> Esta funcion no retorna nada
 void Passenger_delete(Passenger* this)
 {
 	if(this != NULL)
@@ -78,6 +79,11 @@ void Passenger_delete(Passenger* this)
 	}
 }
 
+/// @brief --> Esta funcion setea el id
+///
+/// @param --> this Toma el pasajero y lo retorna por referencia
+/// @param --> id Recibe el id
+/// @return --> Esta funcion retorna 0 si se seteo correctamente o -1 si no fue asi
 int Passenger_setId(Passenger* this,int id)
 {
 	int retorno = -1;
@@ -91,6 +97,11 @@ int Passenger_setId(Passenger* this,int id)
 	return retorno;
 }
 
+/// @brief --> Esta funcion obtiene el id
+///
+/// @param --> this Toma el pasajero y lo retorna por referencia
+/// @param --> id Retorna el id por referencia
+/// @return --> Esta funcion retorna 0 si se obtuvo correctamente o -1 si no fue asi
 int Passenger_getId(Passenger* this,int* id)
 {
 	int retorno = -1;
@@ -104,6 +115,11 @@ int Passenger_getId(Passenger* this,int* id)
 	return retorno;
 }
 
+/// @brief --> Esta funcion setea el nombre
+///
+/// @param --> this Toma el pasajero y lo retorna por referencia
+/// @param --> nombre Retorna el nombre por referencia
+/// @return --> Esta funcion retorna 0 si se seteo correctamente o -1 si no fue asi
 int Passenger_setNombre(Passenger* this,char* nombre)
 {
 	int retorno = -1;
@@ -117,6 +133,11 @@ int Passenger_setNombre(Passenger* this,char* nombre)
 	return retorno;
 }
 
+/// @brief --> Esta funcion obtiene el nombre
+///
+/// @param --> this Toma el pasajero y lo retorna por referencia
+/// @param --> nombre Retorna el nombre por referencia
+/// @return --> Esta funcion retorna 0 si se obtuvo correctamente o -1 si no fue asi
 int Passenger_getNombre(Passenger* this,char* nombre)
 {
 	int retorno = -1;
@@ -130,6 +151,11 @@ int Passenger_getNombre(Passenger* this,char* nombre)
 	return retorno;
 }
 
+/// @brief --> Esta funcion setea el apellido
+///
+/// @param --> this Toma el pasajero y lo retorna por referencia
+/// @param --> apellido Retorna el apellido por referencia
+/// @return --> Esta funcion retorna 0 si se seteo correctamente o -1 si no fue asi
 int Passenger_setApellido(Passenger* this,char* apellido)
 {
 	int retorno = -1;
@@ -143,6 +169,11 @@ int Passenger_setApellido(Passenger* this,char* apellido)
 	return retorno;
 }
 
+/// @brief --> Esta funcion obtiene el apellido
+///
+/// @param --> this Toma el pasajero y lo retorna por referencia
+/// @param --> apellido Retorna el apellido por referencia
+/// @return --> Esta funcion retorna 0 si se obtuvo correctamente o -1 si no fue asi
 int Passenger_getApellido(Passenger* this,char* apellido)
 {
 	int retorno = -1;
@@ -156,6 +187,11 @@ int Passenger_getApellido(Passenger* this,char* apellido)
 	return retorno;
 }
 
+/// @brief --> Esta funcion setea el codigo de vuelo
+///
+/// @param --> this Toma el pasajero y lo retorna por referencia
+/// @param --> codigoVuelo Retorna el codigo de vuelo por referencia
+/// @return --> Esta funcion retorna 0 si se seteo correctamente o -1 si no fue asi
 int Passenger_setCodigoVuelo(Passenger* this,char* codigoVuelo)
 {
 	int retorno = -1;
@@ -169,6 +205,11 @@ int Passenger_setCodigoVuelo(Passenger* this,char* codigoVuelo)
 	return retorno;
 }
 
+/// @brief --> Esta funcion obtiene el codigo de vuelo
+///
+/// @param --> this Toma el pasajero y lo retorna por referencia
+/// @param --> codigoVuelo Retorna el codigo de vuelo por referencia
+/// @return --> Esta funcion retorna 0 si se obtuvo correctamente o -1 si no fue asi
 int Passenger_getCodigoVuelo(Passenger* this,char* codigoVuelo)
 {
 	int retorno = -1;
@@ -182,6 +223,11 @@ int Passenger_getCodigoVuelo(Passenger* this,char* codigoVuelo)
 	return retorno;
 }
 
+/// @brief --> Esta funcion setea el tipo de pasajero
+///
+/// @param --> this Toma el pasajero y lo retorna por referencia
+/// @param --> tipoPasajero Recibe el tipo de pasajero
+/// @return --> Esta funcion retorna 0 si se seteo correctamente o -1 si no fue asi
 int Passenger_setTipoPasajero(Passenger* this,int tipoPasajero)
 {
 	int retorno = -1;
@@ -195,6 +241,11 @@ int Passenger_setTipoPasajero(Passenger* this,int tipoPasajero)
 	return retorno;
 }
 
+/// @brief --> Esta funcion obtiene el tipo de pasajero
+///
+/// @param --> this Toma el pasajero y lo retorna por referencia
+/// @param --> tipoPasajero Retorna el tipo de pasajero por referencia
+/// @return --> Esta funcion retorna 0 si se obtuvo correctamente o -1 si no fue asi
 int Passenger_getTipoPasajero(Passenger* this,int* tipoPasajero)
 {
 	int retorno = -1;
@@ -208,6 +259,11 @@ int Passenger_getTipoPasajero(Passenger* this,int* tipoPasajero)
 	return retorno;
 }
 
+/// @brief --> Esta funcion setea el precio
+///
+/// @param --> this Toma el pasajero y lo retorna por referencia
+/// @param --> precio Recibe el precio
+/// @return --> Esta funcion retorna 0 si se seteo correctamente o -1 si no fue asi
 int Passenger_setPrecio(Passenger* this,float precio)
 {
 	int retorno = -1;
@@ -221,6 +277,11 @@ int Passenger_setPrecio(Passenger* this,float precio)
 	return retorno;
 }
 
+/// @brief --> Esta funcion obtiene el precio
+///
+/// @param --> this Toma el pasajero y lo retorna por referencia
+/// @param --> precio Retorna el precio por referencia
+/// @return --> Esta funcion retorna 0 si se obtuvo correctamente o -1 si no fue asi
 int Passenger_getPrecio(Passenger* this,float* precio)
 {
 	int retorno = -1;
@@ -234,6 +295,11 @@ int Passenger_getPrecio(Passenger* this,float* precio)
 	return retorno;
 }
 
+/// @brief --> Esta funcion setea el estado del vuelo
+///
+/// @param --> this Toma el pasajero y lo retorna por referencia
+/// @param --> estadoVuelo Recibe el estado del vuelo
+/// @return --> Esta funcion retorna 0 si se seteo correctamente o -1 si no fue asi
 int Passenger_setEstadoVuelo(Passenger* this,int estadoVuelo)
 {
 	int retorno = -1;
@@ -247,6 +313,11 @@ int Passenger_setEstadoVuelo(Passenger* this,int estadoVuelo)
 	return retorno;
 }
 
+/// @brief --> Esta funcion obtiene el estado del vuelo
+///
+/// @param --> this Toma el pasajero y lo retorna por referencia
+/// @param --> estadoVuelo Retorna el estado de vuelo por referencia
+/// @return --> Esta funcion retorna 0 si se obtuvo correctamente o -1 si no fue asi
 int Passenger_getEstadoVuelo(Passenger* this,int * estadoVuelo)
 {
 	int retorno = -1;
@@ -260,6 +331,17 @@ int Passenger_getEstadoVuelo(Passenger* this,int * estadoVuelo)
 	return retorno;
 }
 
+/// @brief --> Esta funcion obtiene todos los datos del pasajero
+///
+/// @param --> this Retorna el pasajero por referencia
+/// @param --> id Retorna el id por referencia
+/// @param --> nombre Retorna el nombre por referencia
+/// @param --> apellido Retorna el apellido por referencia
+/// @param --> precio Retorna el precio por referencia
+/// @param --> tipoPasajero Retorna el tipo de pasajero por referencia
+/// @param --> codigoVuelo Retorna el codigo de vuelo por referencia
+/// @param --> estadoDeVuelo Retorna el estado de vuelo por referencia
+/// @return --> Esta funcion retorna 0 si se obtuvo correctamente o -1 si no fue asi
 int Passenger_getAll(Passenger* this, int * id, char * nombre, char * apellido, float * precio, int * tipoPasajero, char * codigoVuelo, int * estadoDeVuelo)
 {
 	int retorno = -1;
@@ -289,6 +371,10 @@ void printTitle()
 	printf("+-----+----------------+----------------+-------------+----------------+-----------------+---------------+\n");
 }
 
+/// @brief --> Esta funcion muestra un pasajero
+///
+/// @param --> this Retorna el pasajero por referencia
+/// @return --> Esta funcion no retorna nada
 void Passenger_printOne(Passenger * this)
 {
 	int id;
@@ -312,7 +398,10 @@ void Passenger_printOne(Passenger * this)
 	}
 }
 
-
+/// @brief --> Esta funcion muestra un pasajero
+///
+/// @param --> id Retorna el id por referencia
+/// @return --> Esta funcion retorna el puntero al pasajero
 Passenger* requestPassengerData(char * id)
 {
 	Passenger* puntPassenger;
@@ -330,7 +419,7 @@ Passenger* requestPassengerData(char * id)
 		if(getChars(auxName, sizeof(auxName), "Ingrese un nombre: ", "ERROR. Ingreso un nombre invalido\n\n",
 				3)==0 && getChars(auxLastName, sizeof(auxLastName), "Ingrese un apellido: ", "ERROR. Ingreso un apellido invalido\n\n",
 						3)==0 && getFloatInText(auxPrice, "Ingrese el precio del vuelo ($5000 - $1000000): $", "ERROR. Ingreso un precio invalido\n\n",
-								1500000, 5000, 3)==0 && getIntInText(auxTypePassenger, "\nTipo de Pasajero\n\n1. FirstClass \n2. ExecutiveClass\n3. EconomyClass\n"
+								1000000, 5000, 3)==0 && getIntInText(auxTypePassenger, "\nTipo de Pasajero\n\n1. FirstClass \n2. ExecutiveClass\n3. EconomyClass\n"
 										"Ingrese una opcion: ", "ERROR. Ingreso una opcion incorrecta.\n\n",
 										3, 1, 3)==0 && getCodeChar(auxFlyCode, sizeof(auxFlyCode),
 												"\nIngrese el codigo de vuelo (max 10 caracteres): ", "ERROR. Ingreso un codigo de vuelo invalido\n\n" , 3)==0
@@ -345,6 +434,10 @@ Passenger* requestPassengerData(char * id)
 	return puntPassenger;
 }
 
+/// @brief --> Esta funcion muestra un pasajero
+///
+/// @param --> this Retorna el pasajero por referencia
+/// @return --> Esta funcion retorna 0 si se edito correctamente o -1 si no fue asi
 int Passenger_edit(Passenger * this)
 {
 	int retorno = -1;
@@ -427,6 +520,11 @@ int Passenger_edit(Passenger * this)
 	return retorno;
 }
 
+/// @brief --> Esta funcion compara los id de dos pasajeros
+///
+/// @param --> firstPassenger Retorna el pasajero por referencia
+/// @param --> secondPassenger Retorna el pasajero por referencia
+/// @return --> Esta funcion retorna 1 si el primer pasajero es mayor, 0 si son iguales o -1 si el segundo pasajero es mayor
 int Passenger_compareId(void * firstPassenger, void * secondPassenger)
 {
 	int retorno = -1;
@@ -451,6 +549,11 @@ int Passenger_compareId(void * firstPassenger, void * secondPassenger)
 	return retorno;
 }
 
+/// @brief --> Esta funcion compara los nombres de dos pasajeros
+///
+/// @param --> firstPassenger Retorna el pasajero por referencia
+/// @param --> secondPassenger Retorna el pasajero por referencia
+/// @return --> Esta funcion retorna 1 si el primer pasajero es mayor, 0 si son iguales o -1 si el segundo pasajero es mayor
 int Passenger_compareName(void * firstPassenger, void * secondPassenger)
 {
 	int retorno = -1;
@@ -474,6 +577,11 @@ int Passenger_compareName(void * firstPassenger, void * secondPassenger)
 	return retorno;
 }
 
+/// @brief --> Esta funcion compara los apellidos de dos pasajeros
+///
+/// @param --> firstPassenger Retorna el pasajero por referencia
+/// @param --> secondPassenger Retorna el pasajero por referencia
+/// @return --> Esta funcion retorna 1 si el primer pasajero es mayor, 0 si son iguales o -1 si el segundo pasajero es mayor
 int Passenger_compareLastName(void * firstPassenger, void * secondPassenger)
 {
 	int retorno = -1;
@@ -498,6 +606,11 @@ int Passenger_compareLastName(void * firstPassenger, void * secondPassenger)
 	return retorno;
 }
 
+/// @brief --> Esta funcion compara los precios de dos pasajeros
+///
+/// @param --> firstPassenger Retorna el pasajero por referencia
+/// @param --> secondPassenger Retorna el pasajero por referencia
+/// @return --> Esta funcion retorna 1 si el primer pasajero es mayor, 0 si son iguales o -1 si el segundo pasajero es mayor
 int Passenger_comparePrice(void * firstPassenger, void * secondPassenger)
 {
 	int retorno = -1;
@@ -522,6 +635,11 @@ int Passenger_comparePrice(void * firstPassenger, void * secondPassenger)
 	return retorno;
 }
 
+/// @brief --> Esta funcion compara los codigos de vuelo de dos pasajeros
+///
+/// @param --> firstPassenger Retorna el pasajero por referencia
+/// @param --> secondPassenger Retorna el pasajero por referencia
+/// @return --> Esta funcion retorna 1 si el primer pasajero es mayor, 0 si son iguales o -1 si el segundo pasajero es mayor
 int Passenger_compareFlyCode(void * firstPassenger, void * secondPassenger)
 {
 	int retorno = -1;
@@ -546,6 +664,11 @@ int Passenger_compareFlyCode(void * firstPassenger, void * secondPassenger)
 	return retorno;
 }
 
+/// @brief --> Esta funcion compara los tipos de dos pasajeros
+///
+/// @param --> firstPassenger Retorna el pasajero por referencia
+/// @param --> secondPassenger Retorna el pasajero por referencia
+/// @return --> Esta funcion retorna 1 si el primer pasajero es mayor, 0 si son iguales o -1 si el segundo pasajero es mayor
 int Passenger_compareTypePassenger(void * firstPassenger, void * secondPassenger)
 {
 	int retorno = -1;
@@ -570,6 +693,11 @@ int Passenger_compareTypePassenger(void * firstPassenger, void * secondPassenger
 	return retorno;
 }
 
+/// @brief --> Esta funcion compara los estados de vuelo de dos pasajeros
+///
+/// @param --> firstPassenger Retorna el pasajero por referencia
+/// @param --> secondPassenger Retorna el pasajero por referencia
+/// @return --> Esta funcion retorna 1 si el primer pasajero es mayor, 0 si son iguales o -1 si el segundo pasajero es mayor
 int Passenger_compareStatusFlight(void * firstPassenger, void * secondPassenger)
 {
 	int retorno = -1;
@@ -594,6 +722,11 @@ int Passenger_compareStatusFlight(void * firstPassenger, void * secondPassenger)
 	return retorno;
 }
 
+/// @brief --> Esta funcion convierte el tipo de pasajero en un entero
+///
+/// @param --> typePassenger Recibe el tipo de pasajero a convertir
+/// @param --> typePassengerInt Retorna el tipo de pasajero convertido
+/// @return --> Esta funcion retorna 0 si se convirtio correctamente o -1 si no fue asi
 int convertTypePassengerToInt(char typePassenger[], int * typePassengerInt)
 {
 	int auxTypePassenger;
@@ -630,6 +763,11 @@ int convertTypePassengerToInt(char typePassenger[], int * typePassengerInt)
 	return retorno;
 }
 
+/// @brief --> Esta funcion convierte los estados de vuelo en un entero
+///
+/// @param --> flightStatus Recibe el estado de vuelo a convertir
+/// @param --> flightStatusInt Retorna el estado de vuelo convertido
+/// @return --> Esta funcion retorna 0 si se convirtio correctamente o -1 si no fue asi
 int convertFlightStatusToInt(char flightStatus[], int * flightStatusInt)
 {
 	int auxFlightStatus;
@@ -675,6 +813,11 @@ int convertFlightStatusToInt(char flightStatus[], int * flightStatusInt)
 	return retorno;
 }
 
+/// @brief --> Esta funcion convierte tipos de pasajero en una cadena de caracteres
+///
+/// @param --> typePassengerInt Recibe el tipo de pasajero a convertir
+/// @param --> typePassenger Retorna el tipo de pasajero convertido
+/// @return --> Esta funcion retorna 0 si se convirtio correctamente o -1 si no fue asi
 int convertTypePassengerToChar(int typePassengerInt,char typePassenger[])
 {
 	int retorno = -1;
@@ -701,6 +844,11 @@ int convertTypePassengerToChar(int typePassengerInt,char typePassenger[])
 	return retorno;
 }
 
+/// @brief --> Esta funcion convierte tipos de pasajero en una cadena de caracteres
+///
+/// @param --> flightStatusInt Recibe el estado de vuelo a convertir
+/// @param --> flightStatus Retorna el estado de vuelo convertido
+/// @return --> Esta funcion retorna 0 si se convirtio correctamente o -1 si no fue asi
 int convertStatusFlightToChar(int flightStatusInt, char flightStatus[])
 {
 	int retorno = -1;
@@ -731,11 +879,18 @@ int convertStatusFlightToChar(int flightStatusInt, char flightStatus[])
 	return retorno;
 }
 
+/// @brief --> Esta funcion busca el ultimo id en el archivo
+///
+/// @param --> path Recibe el archivo a leer
+/// @param --> id Retorna el id leido
+/// @return --> Esta funcion retorna 0 si se leyo correctamente o -1 si no fue asi
 int Passenger_findLastId(char * path, char * id)
 {
 	int retorno = -1;
 	char auxId[10];
 	FILE * pFile;
+
+	pFile = NULL;
 
 	if(id != NULL && path != NULL)
 	{
@@ -754,6 +909,10 @@ int Passenger_findLastId(char * path, char * id)
 	return retorno;
 }
 
+/// @brief --> Esta funcion busca el ultimo id en el archivo
+///
+/// @param --> id Retorna el id incrementado
+/// @return --> Esta funcion retorna 0 si se leyo correctamente o -1 si no fue asi
 int Passenger_increaseId(char * id)
 {
 	int auxId;
@@ -770,11 +929,17 @@ int Passenger_increaseId(char * id)
 	return retorno;
 }
 
+/// @brief --> Esta funcion busca el ultimo id en el archivo
+///
+/// @param --> path Recibe el archivo a escribir
+/// @param --> id Retorna el id nuevo escrito
+/// @return --> Esta funcion retorna 0 si se escribio correctamente o -1 si no fue asi
 int Passenger_writeNewId(char * path, char * id)
 {
 	int retorno = -1;
 	FILE * pFile;
 
+	pFile = NULL;
 
 	if(id != NULL && path != NULL)
 	{
@@ -790,6 +955,11 @@ int Passenger_writeNewId(char * path, char * id)
 	return retorno;
 }
 
+/// @brief --> Esta funcion busca el pasajero por el ID
+///
+/// @param --> pArrayListPassenger Recibe la lista donde buscara el id
+/// @param --> idABuscar Recibe el id a buscar
+/// @return --> Esta funcion retorna el indice del pasajero
 int Passenger_findPassengerById(LinkedList* pArrayListPassenger, int idABuscar)
 {
 	int retorno = -1;
