@@ -73,6 +73,7 @@ int main() {
 							{
 								printf("\nSe han cargado los pasajeros correctamente (modo binario)\n");
 								flagCargaArchivo = 1;
+								flag = 1;
 								if(flagSave == 1)
 								{
 									flagSave = 0;
@@ -169,6 +170,10 @@ int main() {
 							{
 								printf("\nERROR al guardar el archivo (modo binario)\n");
 							}
+						}
+						else
+						{
+							printf("\nDebe cargar los datos de los pasajeros para poder guardar (opcion 1)\n");
 						}
 						break;
 					case 10:

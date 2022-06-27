@@ -423,7 +423,7 @@ int controller_saveAsBinary(char* path , LinkedList* pArrayListPassenger)
 			for(int i = 0; i < tamanio; i++)
 			{
 				auxPassenger = (Passenger*)ll_get(pArrayListPassenger, i);
-				fwrite(auxPassenger, sizeof(auxPassenger), 1, pFile);
+				fwrite(auxPassenger, sizeof(Passenger), 1, pFile);
 			}
 
 			retorno = 0;

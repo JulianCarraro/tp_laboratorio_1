@@ -78,7 +78,7 @@ int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger)
 			aPassenger = Passenger_new();
 			if(aPassenger != NULL)
 			{
-				if(fread(aPassenger, sizeof(aPassenger), 1, pFile)==1)
+				if(fread(aPassenger, sizeof(Passenger), 1, pFile)==1)
 				{
 					if(ll_add(pArrayListPassenger, aPassenger)==0)
 					{
